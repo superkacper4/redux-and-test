@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AlertMessage should match snapshot 1`] = `
+<div>
+  <li
+    class="sc-AxjAm dSRkXJ"
+  >
+    <button
+      class="sc-AxirZ gYOjaL"
+    >
+      k
+    </button>
+    hello
+  </li>
+</div>
+`;
+
+exports[`List item Renders children 1`] = `[Function]`;

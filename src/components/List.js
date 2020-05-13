@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 
+import { addToCart } from '../actions/cart.actions'
 import ListItem from './ListItem'
 
 const StyledList = styled.ul`
@@ -12,13 +14,44 @@ const StyledList = styled.ul`
     height:100vh;
 `;
 
-const List = () => {
+const List = ({ lists, addToCart, deleteFromList }) => {
+    const handleClick = (text, id) => {
+        console.log('dzial')
+        addToCart(text, id);
+        deleteFromList(id)
+    }
+
+    const compare = (a, b) => {
+        if (a.id < b.id) {
+            return -1;
+        }
+        if (a.id > b.id) {
+            return 1;
+        }
+        return 0;
+    }
+
+
     return (
         <StyledList>
-            <ListItem>raz</ListItem>
-            <ListItem>dwa</ListItem>
-        </StyledList>
+            {lists.sort(compare)
+                .map((item) => (
+                    <ListItem key={item.id} onClick={() => handleClick(item.text, item.id)}>{item.text}</ListItem>
+                ))}
+        </StyledList >
     )
 }
 
-export default List;
+const mapStateToProps = state => ({
+    lists: state.lists
+})
+
+const mapDispatchToProps = dispatch => ({
+    addToCart: (text, id) => dispatch(addToCart(text, id)),
+    deleteFromList: (id) => dispatch({
+        type: "DELETE_FROM_LIST",
+        id
+    })
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);

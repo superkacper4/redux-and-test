@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+
 
 import ListItem from './ListItem'
 
@@ -37,21 +39,52 @@ const StyledH2 = styled.h2`
     padding:20px;
 `;
 
-const Cart = () => {
+const Cart = ({ carts, addToList, deleteFromCart }) => {
     const [toggle, setToggle] = useState(false);
-    const handleClick = () => {
+    const handleToggle = () => {
         setToggle(!toggle);
         console.log(toggle)
     }
+
+    const handleCart = (text, id) => {
+        addToList(text, id);
+        deleteFromCart(id);
+    }
     return (
         <>
-            <StyledCartIcon onClick={handleClick} >Koszyk</StyledCartIcon>
+            <StyledCartIcon onClick={handleToggle} >Koszyk</StyledCartIcon>
             <StyledCart toggle={toggle}>
                 <StyledH2>Koszyk</StyledH2>
-                <ListItem cart>trezy</ListItem>
+                {carts.map((item) => (
+                    <ListItem cart key={item.id} onClick={() => handleCart(item.text, item.id)}>{item.text}</ListItem>
+                ))}
             </StyledCart>
         </>
     )
 }
 
-export default Cart;
+const mapStateToProps = state => ({
+    carts: state.carts,
+})
+
+
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    addToList: (text, id) => dispatch({
+        type: "ADD_TO_LIST",
+        text,
+        id
+    }),
+    deleteFromCart: (id) => dispatch({
+        type: "DELETE_FROM_CART",
+        id
+    })
+})
+
+// type: 'ADD_TODO',
+// id: todoid++,
+// complete: false,
+// text
+// })
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

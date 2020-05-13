@@ -18,22 +18,30 @@ const StyledListItem = styled.li`
 `;
 
 const StyledAdd = styled.button`
-    height: 2vh;
-    width:2vh;
+    height: 100%;
+    width:10%;
     background-color: ${({ cart }) => cart ? 'red' : 'green'};
     border:none;
     position: absolute;
     top:0;
     right:0;
+    border: solid 2px black;
+    transition: background-color .5s;
+    cursor: pointer;
+
+    &:hover{
+        background-color: ${({ cart }) => cart ? 'orange' : 'lightgreen'}
+    }
 `;
 
-const ListItem = ({ children, cart }) => {
+const ListItem = ({ children, cart, onClick }) => {
     return (
         <StyledListItem>
-            <StyledAdd cart={cart}>k</StyledAdd>
+            <StyledAdd cart={cart} onClick={onClick}>k</StyledAdd>
             {children}
         </StyledListItem>
     )
 }
+
 
 export default ListItem;
